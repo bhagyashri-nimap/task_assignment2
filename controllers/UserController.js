@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
     }
 })
 //getAllRegisterUser
-router.post("/getAllUser", function (req, res) {
+router.get("/getAllUser", function (req, res) {
     userData.find({})
         .sort({
             _id: -1
