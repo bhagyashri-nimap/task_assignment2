@@ -1,7 +1,6 @@
 
 const mongoose = require('mongoose'),ObjectId=mongoose.ObjectId;
 var { userData } = require('../mongooseModel/User.js');
-var { parkinglot } = require('../mongooseModel/ParkingLot.js');
 require('dotenv').config();
 var _ = require('lodash');
 var jwt = require("jsonwebtoken")

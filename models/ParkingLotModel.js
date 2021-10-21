@@ -154,5 +154,7 @@ exports.updateTotalParkingSlot = (req, res) => {
           })
         }
     });
-  };
+  }
+
+ 
   

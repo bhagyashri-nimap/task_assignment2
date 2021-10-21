@@ -3,6 +3,7 @@ var router = express.Router()
 var ParkingLotModel = require('../models/ParkingLotModel')
 var {authenticateUser} = require("../config/middleware");
 var middleware= require("../config/validatingApi");
+var { parkinglot } = require('../mongooseModel/ParkingLot.js');
 router.use(express.json());
 //saveParkingLots
 router.post("/parking/save", async (req, res) => {
@@ -31,8 +32,40 @@ router.put('/parking/updateTotalparkingslot',[middleware.updateTotalParkingSlotV
 router.post('/parking/calculateTotalparkingslot', [middleware.validateCalculation], (req, res) => {
     ParkingLotModel.calculateTotalparkingslot(req, res);
   })
-
-router.post('/parking/calculateTotalparkingslot', [middleware.validateCalculation], (req, res) => {
-    ParkingLotModel.calculateTotalparkingslot(req, res);
+router.get('/getAllavailableParkingSlots',authenticateUser, (req, res) => {
+    parkinglot.find({ reservedParkingCapacity:{ $not: { $lte: 0 } }},{notReservedParkingCapacity:0,createdAt:0,updatedAt:0})
+    .sort({
+        _id: -1
+    })
+    .then((data) => {
+        data = {
+            AvailableParkingSlots: data,
+            count: data.length
+        }
+        res.json(data)
+    })
+    .catch((err) => {
+        res.status(500).json({
+            message: err.message || "Error occurred"
+        })
+    })
+})
+router.get('/getAllOccupiedParkingSlots',authenticateUser, (req, res) => {
+    parkinglot.find({},{reservedParkingCapacity:0,createdAt:0,updatedAt:0})
+    .sort({
+        _id: -1
+    })
+    .then((data) => {
+        data = {
+            AvailableParkingSlots: data,
+            count: data.length
+        }
+        res.json(data)
+    })
+    .catch((err) => {
+        res.status(500).json({
+            message: err.message || "Error occurred"
+        })
+    })
 })
 module.exports = router
