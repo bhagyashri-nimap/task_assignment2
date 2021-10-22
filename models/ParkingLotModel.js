@@ -15,7 +15,7 @@ exports.save = async function (data) {
        saveParkingLot = await parkingObj.save()
        if (saveParkingLot && !saveParkingLot._id) {
            return {
-               data: "Something Went Wrong While Saving UserAccount",
+               data: "Something Went Wrong While Saving ParkingLot ",
                value: false
            }
        }
