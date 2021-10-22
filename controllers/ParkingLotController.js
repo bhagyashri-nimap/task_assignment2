@@ -32,6 +32,8 @@ router.put('/parking/updateTotalparkingslot',[middleware.updateTotalParkingSlotV
 router.post('/parking/calculateTotalparkingslot', [middleware.validateCalculation], (req, res) => {
     ParkingLotModel.calculateTotalparkingslot(req, res);
   })
+
+//getAllavailableParkingSlots
 router.get('/getAllavailableParkingSlots',authenticateUser, (req, res) => {
     parkinglot.find({ reservedParkingCapacity:{ $not: { $lte: 0 } }},{notReservedParkingCapacity:0,createdAt:0,updatedAt:0})
     .sort({
@@ -50,6 +52,7 @@ router.get('/getAllavailableParkingSlots',authenticateUser, (req, res) => {
         })
     })
 })
+//getAllOccupiedParkingSlots
 router.get('/getAllOccupiedParkingSlots',authenticateUser, (req, res) => {
     parkinglot.find({},{reservedParkingCapacity:0,createdAt:0,updatedAt:0})
     .sort({
